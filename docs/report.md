@@ -211,14 +211,14 @@ docker compose exec web python manage.py create_next_round
 
 ## 10. GitHub 링크
 
-현재 로컬 저장소에는 커밋이 완료되어 있다. 제출 전 GitHub 인증 후 원격 저장소를 생성하고 push한 다음 아래 URL을 실제 주소로 교체한다.
+소스 코드는 아래 GitHub 저장소에 업로드했다.
 
 ```bash
 gh auth login
 gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
 ```
 
-- GitHub: `TODO`
+- GitHub: https://github.com/hmooko/oss-assignment-lotto
 
 제출 체크리스트는 `docs/submission-checklist.md`에 별도로 정리했다.
 

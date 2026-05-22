@@ -40,4 +40,4 @@ gh auth login
 gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
 ```
 
-업로드 후 [report.md](/Users/koohyunmo/Developer/oss-assignment-lotto/docs/report.md)의 `GitHub: TODO`를 실제 URL로 교체한다.
+업로드 후 [report.md](/Users/koohyunmo/Developer/oss-assignment-lotto/docs/report.md)의 GitHub 링크가 실제 URL인지 확인한다.
