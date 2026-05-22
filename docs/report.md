@@ -159,7 +159,7 @@ GitHub 업로드 후에는 `.github/workflows/django-ci.yml`을 통해 push와 p
 
 ```text
 로컬 실행:
-Ran 10 tests in 2.679s
+Ran 10 tests in 2.789s
 
 OK
 
