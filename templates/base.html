@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>6/45 Lotto</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{% url 'lotto:home' %}">6/45 Lotto</a>
+    <nav>
+      <a href="{% url 'lotto:buy_ticket' %}">구매</a>
+      <a href="{% url 'lotto:ticket_list' %}">내 복권</a>
+      <a href="{% url 'lotto:result_list' %}">당첨 확인</a>
+      {% if user.is_staff %}
+        <a href="{% url 'lotto:manager_dashboard' %}">관리자</a>
+      {% endif %}
+      {% if user.is_authenticated %}
+        <form class="inline" method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit">로그아웃</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">로그인</a>
+        <a href="{% url 'lotto:signup' %}">회원가입</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="container">
+    {% for message in messages %}
+      <p class="message {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

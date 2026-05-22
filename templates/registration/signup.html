@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel narrow">
+  <h1>회원가입</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">가입</button>
+  </form>
+</section>
+{% endblock %}

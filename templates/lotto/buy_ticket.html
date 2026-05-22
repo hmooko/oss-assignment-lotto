@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="panel">
+  <h1>{{ current_round.round_number }}회차 복권 구매</h1>
+  <div class="split">
+    <form method="post">
+      <h2>수동 번호</h2>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">수동 구매</button>
+    </form>
+    <form method="post" action="{% url 'lotto:buy_auto_ticket' %}">
+      <h2>자동 번호</h2>
+      {% csrf_token %}
+      <p>1부터 45 사이의 번호 6개를 자동 생성합니다.</p>
+      <button type="submit">자동 구매</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
