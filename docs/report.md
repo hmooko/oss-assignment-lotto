@@ -201,7 +201,12 @@ docker compose exec web python manage.py create_next_round
 
 ## 10. GitHub 링크
 
-제출 전 GitHub 저장소 URL을 아래에 기입한다.
+현재 로컬 저장소에는 커밋이 완료되어 있다. 제출 전 GitHub 인증 후 원격 저장소를 생성하고 push한 다음 아래 URL을 실제 주소로 교체한다.
+
+```bash
+gh auth login
+gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
+```
 
 - GitHub: `TODO`
 

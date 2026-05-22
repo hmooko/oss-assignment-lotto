@@ -40,6 +40,17 @@ docker compose up -d
 curl -I http://localhost:8000
 ```
 
+## GitHub 제출 준비
+
+GitHub CLI 인증이 되어 있다면 다음 명령으로 원격 저장소를 만들고 push합니다.
+
+```bash
+gh auth login
+gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
+```
+
+push 후 `docs/report.md`의 GitHub 링크를 실제 저장소 URL로 교체합니다.
+
 ## 주요 기능
 
 - 일반 사용자: 회원가입, 로그인, 수동 번호 구매, 자동 번호 구매, 구매 내역 조회, 당첨 확인
