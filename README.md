@@ -18,6 +18,12 @@ docker compose up --build
 docker compose exec web python manage.py createsuperuser
 ```
 
+첫 회차 생성:
+
+```bash
+docker compose exec web python manage.py create_next_round
+```
+
 관리자는 Django Admin에서 회차를 생성하고, 웹 관리자 대시보드에서 판매 내역 확인, 추첨 실행, 당첨 내역 확인을 할 수 있습니다.
 
 ## 테스트

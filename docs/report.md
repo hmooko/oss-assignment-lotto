@@ -54,6 +54,7 @@ flowchart LR
 4. 로또 번호 검증, 자동 번호 생성, 당첨 판정 로직을 `services.py`에 구현했다.
 5. 일반 사용자 화면과 관리자 대시보드를 Django Template 기반으로 구현했다.
 6. Django Admin에서 회차, 티켓, 결과를 관리할 수 있도록 등록했다.
+7. `create_next_round` 관리 명령으로 초기 회차를 쉽게 생성할 수 있도록 했다.
 
 ## 7. 테스트 결과
 
@@ -90,6 +91,12 @@ docker compose up --build
 
 ```bash
 docker compose exec web python manage.py createsuperuser
+```
+
+첫 회차 생성:
+
+```bash
+docker compose exec web python manage.py create_next_round
 ```
 
 ## 9. GitHub 링크
