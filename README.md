@@ -51,6 +51,8 @@ gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
 
 push 후 `docs/report.md`의 GitHub 링크를 실제 저장소 URL로 교체합니다.
 
+제출 전 점검 항목은 `docs/submission-checklist.md`에 정리되어 있습니다.
+
 ## 주요 기능
 
 - 일반 사용자: 회원가입, 로그인, 수동 번호 구매, 자동 번호 구매, 구매 내역 조회, 당첨 확인

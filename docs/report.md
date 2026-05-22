@@ -145,6 +145,8 @@ erDiagram
 python manage.py test
 ```
 
+GitHub 업로드 후에는 `.github/workflows/django-ci.yml`을 통해 push와 pull request 시 자동으로 migration 확인과 테스트를 수행한다.
+
 검증 항목:
 
 - 자동 번호 생성 범위와 중복 여부
@@ -157,12 +159,12 @@ python manage.py test
 
 ```text
 로컬 실행:
-Ran 10 tests in 2.787s
+Ran 10 tests in 2.654s
 
 OK
 
 컨테이너 내부 실행:
-Ran 10 tests in 1.583s
+Ran 10 tests in 1.565s
 
 OK
 ```
@@ -209,6 +211,8 @@ gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
 ```
 
 - GitHub: `TODO`
+
+제출 체크리스트는 `docs/submission-checklist.md`에 별도로 정리했다.
 
 ## 11. 개선점
 
