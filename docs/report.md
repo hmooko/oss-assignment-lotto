@@ -159,12 +159,12 @@ GitHub 업로드 후에는 `.github/workflows/django-ci.yml`을 통해 push와 p
 
 ```text
 로컬 실행:
-Ran 10 tests in 2.654s
+Ran 10 tests in 2.679s
 
 OK
 
 컨테이너 내부 실행:
-Ran 10 tests in 1.565s
+Ran 10 tests in 1.559s
 
 OK
 ```
@@ -187,6 +187,14 @@ curl -s http://localhost:8000 | rg "1회차|현재 회차|추첨일"
 ```bash
 cp .env.example .env
 docker compose up --build
+```
+
+반복 검증 명령은 `Makefile`로 묶었다.
+
+```bash
+make check
+make test
+make verify
 ```
 
 관리자 계정 생성:

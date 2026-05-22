@@ -27,6 +27,12 @@ docker compose up -d
 curl -I http://localhost:8000
 ```
 
+Make 명령 사용 시:
+
+```bash
+make verify
+```
+
 ## GitHub 업로드
 
 ```bash

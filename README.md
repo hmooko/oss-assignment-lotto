@@ -32,6 +32,14 @@ docker compose exec web python manage.py create_next_round
 python manage.py test
 ```
 
+Make 명령을 사용할 수도 있습니다.
+
+```bash
+make check
+make test
+make verify
+```
+
 Docker 실행 검증:
 
 ```bash
