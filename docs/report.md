@@ -28,6 +28,34 @@ flowchart LR
     Web --> DB["PostgreSQL"]
 ```
 
+### 3.1 요청 흐름
+
+```mermaid
+sequenceDiagram
+    actor User as 사용자
+    participant Web as Django Web
+    participant DB as PostgreSQL
+    User->>Web: 복권 구매 요청
+    Web->>Web: 번호 검증 또는 자동 번호 생성
+    Web->>DB: 구매 내역 저장
+    DB-->>Web: 저장 결과
+    Web-->>User: 구매 완료 화면
+```
+
+### 3.2 추첨 흐름
+
+```mermaid
+sequenceDiagram
+    actor Admin as 관리자
+    participant Web as Django Web
+    participant DB as PostgreSQL
+    Admin->>Web: 회차 추첨 실행
+    Web->>Web: 당첨 번호 6개와 보너스 번호 생성
+    Web->>DB: 회차 추첨 결과 저장
+    Web->>DB: 해당 회차 티켓별 당첨 결과 저장
+    Web-->>Admin: 추첨 완료 및 당첨 내역 표시
+```
+
 ## 4. Docker 구성
 
 `docker-compose.yml`은 다음 2개 컨테이너로 구성했다.
@@ -36,6 +64,20 @@ flowchart LR
 - `db`: PostgreSQL 데이터베이스
 
 `web` 컨테이너는 `db` healthcheck 완료 후 migration, static collect, Gunicorn 실행을 수행한다.
+
+실제 검증 결과:
+
+```text
+docker compose build
+oss-assignment-lotto-web  Built
+
+docker compose up -d
+oss-assignment-lotto-db-1   Up (healthy)
+oss-assignment-lotto-web-1  Up
+
+curl -I http://localhost:8000
+HTTP/1.1 200 OK
+```
 
 ## 5. DB 설계
 
@@ -46,7 +88,45 @@ flowchart LR
 - `LottoResult`
   - 티켓, 등수, 일치 번호 수, 보너스 일치 여부
 
-## 6. 구현 과정
+```mermaid
+erDiagram
+    User ||--o{ LottoTicket : buys
+    LottoRound ||--o{ LottoTicket : includes
+    LottoTicket ||--|| LottoResult : has
+    LottoRound {
+        int round_number
+        date draw_date
+        json winning_numbers
+        int bonus_number
+        bool is_drawn
+    }
+    LottoTicket {
+        json numbers
+        string purchase_type
+        datetime purchased_at
+    }
+    LottoResult {
+        string rank
+        int match_count
+        bool bonus_matched
+    }
+```
+
+## 6. 주요 화면 및 URL
+
+| 구분 | URL | 설명 |
+| --- | --- | --- |
+| 메인 | `/` | 현재 회차와 최근 당첨 번호 표시 |
+| 회원가입 | `/signup/` | 일반 사용자 계정 생성 |
+| 로그인 | `/accounts/login/` | 사용자 로그인 |
+| 복권 구매 | `/tickets/buy/` | 수동 번호 구매 화면 |
+| 자동 구매 | `/tickets/auto/` | 자동 번호 구매 처리 |
+| 내 복권 | `/tickets/` | 사용자 구매 내역 |
+| 당첨 확인 | `/results/` | 사용자 당첨 결과 |
+| 관리자 대시보드 | `/manager/` | 판매 내역, 추첨, 당첨 내역 |
+| 추첨 실행 | `/manager/rounds/<id>/draw/` | 관리자 추첨 처리 |
+
+## 7. 구현 과정
 
 1. Django 프로젝트와 `lotto` 앱을 생성했다.
 2. PostgreSQL 환경 변수를 지원하도록 설정을 구성했다.
@@ -55,8 +135,9 @@ flowchart LR
 5. 일반 사용자 화면과 관리자 대시보드를 Django Template 기반으로 구현했다.
 6. Django Admin에서 회차, 티켓, 결과를 관리할 수 있도록 등록했다.
 7. `create_next_round` 관리 명령으로 초기 회차를 쉽게 생성할 수 있도록 했다.
+8. `.dockerignore`를 추가하여 Docker 빌드 컨텍스트에서 가상환경, 캐시, 로컬 DB를 제외했다.
 
-## 7. 테스트 결과
+## 8. 테스트 결과
 
 테스트 명령:
 
@@ -75,12 +156,31 @@ python manage.py test
 실행 결과:
 
 ```text
-Ran 10 tests in 2.790s
+로컬 실행:
+Ran 10 tests in 2.787s
+
+OK
+
+컨테이너 내부 실행:
+Ran 10 tests in 1.583s
 
 OK
 ```
 
-## 8. 실행 방법
+추가 검증:
+
+```text
+python manage.py makemigrations --check --dry-run
+No changes detected
+
+docker compose exec web python manage.py create_next_round
+1회차를 생성했습니다.
+
+curl -s http://localhost:8000 | rg "1회차|현재 회차|추첨일"
+현재 회차 / 1회차 / 추첨일 표시 확인
+```
+
+## 9. 실행 방법
 
 ```bash
 cp .env.example .env
@@ -99,13 +199,13 @@ docker compose exec web python manage.py createsuperuser
 docker compose exec web python manage.py create_next_round
 ```
 
-## 9. GitHub 링크
+## 10. GitHub 링크
 
 제출 전 GitHub 저장소 URL을 아래에 기입한다.
 
 - GitHub: `TODO`
 
-## 10. 개선점
+## 11. 개선점
 
 - Nginx 컨테이너 추가를 통한 정적 파일 서빙 분리
 - 회차 자동 생성 스케줄러 추가

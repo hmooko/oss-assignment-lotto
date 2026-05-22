@@ -32,6 +32,14 @@ docker compose exec web python manage.py create_next_round
 python manage.py test
 ```
 
+Docker 실행 검증:
+
+```bash
+docker compose build
+docker compose up -d
+curl -I http://localhost:8000
+```
+
 ## 주요 기능
 
 - 일반 사용자: 회원가입, 로그인, 수동 번호 구매, 자동 번호 구매, 구매 내역 조회, 당첨 확인
