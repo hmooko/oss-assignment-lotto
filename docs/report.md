@@ -145,8 +145,6 @@ erDiagram
 python manage.py test
 ```
 
-GitHub 업로드 후에는 `.github/workflows/django-ci.yml`을 통해 push와 pull request 시 자동으로 migration 확인과 테스트를 수행한다.
-
 검증 항목:
 
 - 자동 번호 생성 범위와 중복 여부
@@ -159,7 +157,7 @@ GitHub 업로드 후에는 `.github/workflows/django-ci.yml`을 통해 push와 p
 
 ```text
 로컬 실행:
-Ran 10 tests in 2.789s
+Ran 10 tests in 2.906s
 
 OK
 
@@ -189,14 +187,6 @@ cp .env.example .env
 docker compose up --build
 ```
 
-반복 검증 명령은 `Makefile`로 묶었다.
-
-```bash
-make check
-make test
-make verify
-```
-
 관리자 계정 생성:
 
 ```bash
@@ -213,14 +203,7 @@ docker compose exec web python manage.py create_next_round
 
 소스 코드는 아래 GitHub 저장소에 업로드했다.
 
-```bash
-gh auth login
-gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
-```
-
 - GitHub: https://github.com/hmooko/oss-assignment-lotto
-
-제출 체크리스트는 `docs/submission-checklist.md`에 별도로 정리했다.
 
 ## 11. 개선점
 

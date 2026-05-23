@@ -32,14 +32,6 @@ docker compose exec web python manage.py create_next_round
 python manage.py test
 ```
 
-Make 명령을 사용할 수도 있습니다.
-
-```bash
-make check
-make test
-make verify
-```
-
 Docker 실행 검증:
 
 ```bash
@@ -48,18 +40,9 @@ docker compose up -d
 curl -I http://localhost:8000
 ```
 
-## GitHub 제출 준비
+## GitHub
 
-GitHub CLI 인증이 되어 있다면 다음 명령으로 원격 저장소를 만들고 push합니다.
-
-```bash
-gh auth login
-gh repo create oss-assignment-lotto --public --source=. --remote=origin --push
-```
-
-push 후 `docs/report.md`의 GitHub 링크를 실제 저장소 URL로 교체합니다.
-
-제출 전 점검 항목은 `docs/submission-checklist.md`에 정리되어 있습니다.
+소스 코드: https://github.com/hmooko/oss-assignment-lotto
 
 ## 주요 기능
 
