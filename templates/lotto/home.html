@@ -108,8 +108,8 @@
       <strong>{{ auto_count }}장</strong>
     </div>
     <div class="stat-item">
-      <span>총 판매금액</span>
-      <strong>{{ sales_amount }}원</strong>
+      <span>추첨 상태</span>
+      <strong>{% if current_round %}대기 중{% else %}-{% endif %}</strong>
     </div>
   </div>
 </section>

@@ -24,12 +24,10 @@ class HomeView(generic.TemplateView):
             context["sales_count"] = round_tickets.count()
             context["manual_count"] = round_tickets.filter(purchase_type=LottoTicket.MANUAL).count()
             context["auto_count"] = round_tickets.filter(purchase_type=LottoTicket.AUTO).count()
-            context["sales_amount"] = context["sales_count"] * 1000
         else:
             context["sales_count"] = 0
             context["manual_count"] = 0
             context["auto_count"] = 0
-            context["sales_amount"] = 0
         if self.request.user.is_authenticated:
             context["recent_tickets"] = LottoTicket.objects.filter(user=self.request.user).select_related("round")[:3]
         else:
