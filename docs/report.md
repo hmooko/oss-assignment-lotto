@@ -65,19 +65,7 @@ sequenceDiagram
 
 `web` 컨테이너는 `db` healthcheck 완료 후 migration, static collect, Gunicorn 실행을 수행한다.
 
-실제 검증 결과:
-
-```text
-docker compose build
-oss-assignment-lotto-web  Built
-
-docker compose up -d
-oss-assignment-lotto-db-1   Up (healthy)
-oss-assignment-lotto-web-1  Up
-
-curl -I http://localhost:8000
-HTTP/1.1 200 OK
-```
+Docker 실행 상태와 웹 서버 응답은 테스트 결과 섹션의 캡처로 확인할 수 있다.
 
 ## 5. DB 설계
 
@@ -153,42 +141,15 @@ python manage.py test
 - 당첨 등수 판정
 - 일반 사용자와 관리자 권한 분리
 
-실행 결과:
-
-```text
-로컬 실행:
-Ran 10 tests in 2.906s
-
-OK
-
-컨테이너 내부 실행:
-Ran 10 tests in 1.559s
-
-OK
-```
-
-테스트 실행 화면:
+테스트 실행 결과는 다음 캡처와 같다.
 
 ![Django 테스트 결과](./images/test-django.png)
 
-추가 검증:
-
-```text
-python manage.py makemigrations --check --dry-run
-No changes detected
-
-docker compose exec web python manage.py create_next_round
-1회차를 생성했습니다.
-
-curl -s http://localhost:8000 | rg "1회차|현재 회차|추첨일"
-현재 회차 / 1회차 / 추첨일 표시 확인
-```
-
-Docker 컨테이너 실행 상태:
+Docker 컨테이너 실행 상태는 다음 캡처와 같다.
 
 ![Docker 컨테이너 실행 상태](./images/test-docker-ps.png)
 
-웹 서버 응답 확인:
+웹 서버 응답 확인 결과는 다음 캡처와 같다.
 
 ![웹 서버 응답 확인](./images/test-http-200.png)
 
