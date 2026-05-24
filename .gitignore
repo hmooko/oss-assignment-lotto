@@ -6,3 +6,4 @@ __pycache__/
 htmlcov/
 .coverage
 staticfiles/
+.DS_Store

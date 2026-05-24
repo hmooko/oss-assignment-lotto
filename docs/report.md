@@ -167,6 +167,10 @@ Ran 10 tests in 1.559s
 OK
 ```
 
+테스트 실행 화면:
+
+![Django 테스트 결과](./images/test-django.png)
+
 추가 검증:
 
 ```text
@@ -179,6 +183,14 @@ docker compose exec web python manage.py create_next_round
 curl -s http://localhost:8000 | rg "1회차|현재 회차|추첨일"
 현재 회차 / 1회차 / 추첨일 표시 확인
 ```
+
+Docker 컨테이너 실행 상태:
+
+![Docker 컨테이너 실행 상태](./images/test-docker-ps.png)
+
+웹 서버 응답 확인:
+
+![웹 서버 응답 확인](./images/test-http-200.png)
 
 ## 9. 실행 방법
 
