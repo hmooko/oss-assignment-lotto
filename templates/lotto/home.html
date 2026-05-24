@@ -3,7 +3,7 @@
 {% block content %}
 <section class="hero">
   <div class="hero-copy">
-    <p class="eyebrow">Django + Docker 과제</p>
+    <p class="eyebrow">Lotto Service</p>
     <h1>6/45 Lotto</h1>
     <p>수동 또는 자동으로 복권을 구매하고, 추첨 후 당첨 결과를 확인하세요.</p>
     <a class="button" href="{% url 'lotto:buy_ticket' %}">복권 구매하기</a>
@@ -19,17 +19,98 @@
   </div>
 </section>
 
-{% if latest_draw %}
-<section class="panel">
-  <h2>최근 당첨 번호</h2>
-  <p class="muted">{{ latest_draw.round_number }}회차</p>
-  <div class="number-row">
-    {% for number in latest_draw.winning_numbers %}
-      <span class="lotto-ball">{{ number }}</span>
-    {% endfor %}
-    <span class="bonus-label">보너스</span>
-    <span class="lotto-ball bonus">{{ latest_draw.bonus_number }}</span>
+<section class="home-grid">
+  <div class="panel result-card">
+    <div class="card-title-row">
+      <h2>최근 당첨 번호</h2>
+      {% if latest_draw %}
+        <span class="status-pill">{{ latest_draw.round_number }}회차</span>
+      {% else %}
+        <span class="status-pill waiting">추첨 전</span>
+      {% endif %}
+    </div>
+    {% if latest_draw %}
+      <div class="number-row large">
+        {% for number in latest_draw.winning_numbers %}
+          <span class="lotto-ball">{{ number }}</span>
+        {% endfor %}
+        <span class="bonus-label">보너스</span>
+        <span class="lotto-ball bonus">{{ latest_draw.bonus_number }}</span>
+      </div>
+    {% else %}
+      <p class="muted">아직 추첨이 완료된 회차가 없습니다.</p>
+    {% endif %}
+    <div class="feature-row">
+      <div>
+        <strong>간편한 구매</strong>
+        <p>수동 또는 자동으로 복권을 구매할 수 있습니다.</p>
+      </div>
+      <div>
+        <strong>공정한 추첨</strong>
+        <p>관리자가 회차별 추첨을 진행합니다.</p>
+      </div>
+      <div>
+        <strong>결과 확인</strong>
+        <p>내 복권의 당첨 결과를 확인할 수 있습니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel recent-card">
+    <div class="card-title-row">
+      <h2>내 최근 복권</h2>
+      <a class="ghost-button" href="{% url 'lotto:ticket_list' %}">전체 보기</a>
+    </div>
+    <div class="table-wrap flush">
+      <table>
+        <thead>
+          <tr>
+            <th>회차</th>
+            <th>번호</th>
+            <th>방식</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in recent_tickets %}
+            <tr>
+              <td>{{ ticket.round.round_number }}회차</td>
+              <td>
+                <div class="number-row compact">
+                  {% for number in ticket.numbers %}
+                    <span class="lotto-ball small">{{ number }}</span>
+                  {% endfor %}
+                </div>
+              </td>
+              <td>{{ ticket.get_purchase_type_display }}</td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="3" class="empty-state">최근 구매 내역이 없습니다.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
-{% endif %}
+
+<section class="panel stats-panel">
+  <h2>{% if current_round %}{{ current_round.round_number }}회차{% else %}현재 회차{% endif %} 판매 현황</h2>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span>판매 수량</span>
+      <strong>{{ sales_count }}장</strong>
+    </div>
+    <div class="stat-item">
+      <span>수동 구매</span>
+      <strong>{{ manual_count }}장</strong>
+    </div>
+    <div class="stat-item">
+      <span>자동 구매</span>
+      <strong>{{ auto_count }}장</strong>
+    </div>
+    <div class="stat-item">
+      <span>총 판매금액</span>
+      <strong>{{ sales_amount }}원</strong>
+    </div>
+  </div>
+</section>
 {% endblock %}

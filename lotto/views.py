@@ -16,8 +16,24 @@ class HomeView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["current_round"] = LottoRound.objects.filter(is_drawn=False).order_by("round_number").first()
+        current_round = LottoRound.objects.filter(is_drawn=False).order_by("round_number").first()
+        context["current_round"] = current_round
         context["latest_draw"] = LottoRound.objects.filter(is_drawn=True).first()
+        if current_round:
+            round_tickets = current_round.tickets.select_related("user", "round")
+            context["sales_count"] = round_tickets.count()
+            context["manual_count"] = round_tickets.filter(purchase_type=LottoTicket.MANUAL).count()
+            context["auto_count"] = round_tickets.filter(purchase_type=LottoTicket.AUTO).count()
+            context["sales_amount"] = context["sales_count"] * 1000
+        else:
+            context["sales_count"] = 0
+            context["manual_count"] = 0
+            context["auto_count"] = 0
+            context["sales_amount"] = 0
+        if self.request.user.is_authenticated:
+            context["recent_tickets"] = LottoTicket.objects.filter(user=self.request.user).select_related("round")[:3]
+        else:
+            context["recent_tickets"] = []
         return context
 
 
