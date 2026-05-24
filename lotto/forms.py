@@ -7,6 +7,11 @@ from .services import generate_lotto_numbers, validate_lotto_numbers
 
 
 class SignUpForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.help_text = ""
+
     class Meta:
         model = User
         fields = ("username", "password1", "password2")
