@@ -29,7 +29,7 @@ docker compose exec web python manage.py create_next_round
 ## 테스트
 
 ```bash
-python manage.py test
+.venv/bin/python manage.py test
 ```
 
 Docker 실행 검증:

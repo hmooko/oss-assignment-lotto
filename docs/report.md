@@ -130,7 +130,7 @@ erDiagram
 테스트 명령:
 
 ```bash
-python manage.py test
+.venv/bin/python manage.py test
 ```
 
 검증 항목:
