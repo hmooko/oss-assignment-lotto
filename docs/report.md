@@ -178,9 +178,3 @@ docker compose exec web python manage.py create_next_round
 
 - GitHub: https://github.com/hmooko/oss-assignment-lotto
 
-## 11. 개선점
-
-- Nginx 컨테이너 추가를 통한 정적 파일 서빙 분리
-- 회차 자동 생성 스케줄러 추가
-- 당첨 금액 계산 기능 추가
-- 사용자별 구매 수량 제한 기능 추가
