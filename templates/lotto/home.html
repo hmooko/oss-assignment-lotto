@@ -2,7 +2,7 @@
 
 {% block content %}
 <section class="hero">
-  <div>
+  <div class="hero-copy">
     <p class="eyebrow">Django + Docker 과제</p>
     <h1>6/45 Lotto</h1>
     <p>수동 또는 자동으로 복권을 구매하고, 추첨 후 당첨 결과를 확인하세요.</p>
@@ -11,10 +11,10 @@
   <div class="summary">
     <h2>현재 회차</h2>
     {% if current_round %}
-      <p>{{ current_round.round_number }}회차</p>
-      <p>추첨일: {{ current_round.draw_date }}</p>
+      <p class="round-number">{{ current_round.round_number }}회차</p>
+      <p class="muted">추첨일: {{ current_round.draw_date }}</p>
     {% else %}
-      <p>구매 가능한 회차가 없습니다.</p>
+      <p class="muted">구매 가능한 회차가 없습니다.</p>
     {% endif %}
   </div>
 </section>
@@ -22,7 +22,14 @@
 {% if latest_draw %}
 <section class="panel">
   <h2>최근 당첨 번호</h2>
-  <p>{{ latest_draw.round_number }}회차: {{ latest_draw.winning_numbers }} / 보너스 {{ latest_draw.bonus_number }}</p>
+  <p class="muted">{{ latest_draw.round_number }}회차</p>
+  <div class="number-row">
+    {% for number in latest_draw.winning_numbers %}
+      <span class="lotto-ball">{{ number }}</span>
+    {% endfor %}
+    <span class="bonus-label">보너스</span>
+    <span class="lotto-ball bonus">{{ latest_draw.bonus_number }}</span>
+  </div>
 </section>
 {% endif %}
 {% endblock %}

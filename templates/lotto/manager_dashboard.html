@@ -2,92 +2,128 @@
 
 {% block content %}
 <section class="panel">
-  <h1>관리자 대시보드</h1>
+  <div class="section-heading">
+    <p class="eyebrow">Manager</p>
+    <h1>관리자 대시보드</h1>
+    <p class="muted">회차별 판매 현황과 추첨 결과를 확인합니다.</p>
+  </div>
   <h2>회차 및 추첨</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>회차</th>
-        <th>추첨일</th>
-        <th>당첨 번호</th>
-        <th>보너스</th>
-        <th>상태</th>
-        <th>작업</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for round in rounds %}
+  <div class="table-wrap">
+    <table>
+      <thead>
         <tr>
-          <td>{{ round.round_number }}</td>
-          <td>{{ round.draw_date }}</td>
-          <td>{{ round.winning_numbers }}</td>
-          <td>{{ round.bonus_number }}</td>
-          <td>{% if round.is_drawn %}완료{% else %}대기{% endif %}</td>
-          <td>
-            {% if not round.is_drawn %}
-              <form method="post" action="{% url 'lotto:draw_round' round.pk %}">
-                {% csrf_token %}
-                <button type="submit">추첨</button>
-              </form>
-            {% endif %}
-          </td>
+          <th>회차</th>
+          <th>추첨일</th>
+          <th>당첨 번호</th>
+          <th>보너스</th>
+          <th>상태</th>
+          <th>작업</th>
         </tr>
-      {% empty %}
-        <tr><td colspan="6">등록된 회차가 없습니다. Django Admin에서 회차를 추가하세요.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for round in rounds %}
+          <tr>
+            <td><strong>{{ round.round_number }}회차</strong></td>
+            <td>{{ round.draw_date }}</td>
+            <td>
+              <div class="number-row compact">
+                {% for number in round.winning_numbers %}
+                  <span class="lotto-ball small">{{ number }}</span>
+                {% empty %}
+                  <span class="muted">추첨 전</span>
+                {% endfor %}
+              </div>
+            </td>
+            <td>
+              {% if round.bonus_number %}
+                <span class="lotto-ball small bonus">{{ round.bonus_number }}</span>
+              {% else %}
+                <span class="muted">-</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if round.is_drawn %}
+                <span class="status-pill done">완료</span>
+              {% else %}
+                <span class="status-pill waiting">대기</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if not round.is_drawn %}
+                <form method="post" action="{% url 'lotto:draw_round' round.pk %}">
+                  {% csrf_token %}
+                  <button type="submit">추첨</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="empty-state">등록된 회차가 없습니다. Django Admin에서 회차를 추가하세요.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <section class="panel">
   <h2>최근 판매 내역</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>사용자</th>
-        <th>회차</th>
-        <th>번호</th>
-        <th>방식</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for ticket in tickets %}
+  <div class="table-wrap">
+    <table>
+      <thead>
         <tr>
-          <td>{{ ticket.user.username }}</td>
-          <td>{{ ticket.round.round_number }}</td>
-          <td>{{ ticket.numbers }}</td>
-          <td>{{ ticket.get_purchase_type_display }}</td>
+          <th>사용자</th>
+          <th>회차</th>
+          <th>번호</th>
+          <th>방식</th>
         </tr>
-      {% empty %}
-        <tr><td colspan="4">판매 내역이 없습니다.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+          <tr>
+            <td>{{ ticket.user.username }}</td>
+            <td>{{ ticket.round.round_number }}회차</td>
+            <td>
+              <div class="number-row compact">
+                {% for number in ticket.numbers %}
+                  <span class="lotto-ball small">{{ number }}</span>
+                {% endfor %}
+              </div>
+            </td>
+            <td><span class="status-pill">{{ ticket.get_purchase_type_display }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="empty-state">판매 내역이 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <section class="panel">
   <h2>최근 당첨 내역</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>사용자</th>
-        <th>회차</th>
-        <th>결과</th>
-        <th>일치 수</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for result in results %}
+  <div class="table-wrap">
+    <table>
+      <thead>
         <tr>
-          <td>{{ result.ticket.user.username }}</td>
-          <td>{{ result.ticket.round.round_number }}</td>
-          <td>{{ result.rank }}</td>
-          <td>{{ result.match_count }}</td>
+          <th>사용자</th>
+          <th>회차</th>
+          <th>결과</th>
+          <th>일치 수</th>
         </tr>
-      {% empty %}
-        <tr><td colspan="4">당첨 내역이 없습니다.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for result in results %}
+          <tr>
+            <td>{{ result.ticket.user.username }}</td>
+            <td>{{ result.ticket.round.round_number }}회차</td>
+            <td><span class="status-pill result">{{ result.rank }}</span></td>
+            <td>{{ result.match_count }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="empty-state">당첨 내역이 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endblock %}

@@ -2,30 +2,47 @@
 
 {% block content %}
 <section class="panel">
-  <h1>당첨 확인</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>회차</th>
-        <th>내 번호</th>
-        <th>당첨 번호</th>
-        <th>보너스</th>
-        <th>결과</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for result in results %}
+  <div class="section-heading">
+    <p class="eyebrow">Result</p>
+    <h1>당첨 확인</h1>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
         <tr>
-          <td>{{ result.ticket.round.round_number }}</td>
-          <td>{{ result.ticket.numbers }}</td>
-          <td>{{ result.ticket.round.winning_numbers }}</td>
-          <td>{{ result.ticket.round.bonus_number }}</td>
-          <td>{{ result.rank }}</td>
+          <th>회차</th>
+          <th>내 번호</th>
+          <th>당첨 번호</th>
+          <th>보너스</th>
+          <th>결과</th>
         </tr>
-      {% empty %}
-        <tr><td colspan="5">아직 계산된 당첨 결과가 없습니다.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for result in results %}
+          <tr>
+            <td><strong>{{ result.ticket.round.round_number }}회차</strong></td>
+            <td>
+              <div class="number-row compact">
+                {% for number in result.ticket.numbers %}
+                  <span class="lotto-ball small">{{ number }}</span>
+                {% endfor %}
+              </div>
+            </td>
+            <td>
+              <div class="number-row compact">
+                {% for number in result.ticket.round.winning_numbers %}
+                  <span class="lotto-ball small">{{ number }}</span>
+                {% endfor %}
+              </div>
+            </td>
+            <td><span class="lotto-ball small bonus">{{ result.ticket.round.bonus_number }}</span></td>
+            <td><span class="status-pill result">{{ result.rank }}</span></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="5" class="empty-state">아직 계산된 당첨 결과가 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endblock %}

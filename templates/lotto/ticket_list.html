@@ -2,28 +2,39 @@
 
 {% block content %}
 <section class="panel">
-  <h1>내 복권</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>회차</th>
-        <th>번호</th>
-        <th>구매 방식</th>
-        <th>구매일</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for ticket in tickets %}
+  <div class="section-heading">
+    <p class="eyebrow">My Tickets</p>
+    <h1>내 복권</h1>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
         <tr>
-          <td>{{ ticket.round.round_number }}</td>
-          <td>{{ ticket.numbers }}</td>
-          <td>{{ ticket.get_purchase_type_display }}</td>
-          <td>{{ ticket.purchased_at }}</td>
+          <th>회차</th>
+          <th>번호</th>
+          <th>구매 방식</th>
+          <th>구매일</th>
         </tr>
-      {% empty %}
-        <tr><td colspan="4">구매 내역이 없습니다.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+          <tr>
+            <td><strong>{{ ticket.round.round_number }}회차</strong></td>
+            <td>
+              <div class="number-row compact">
+                {% for number in ticket.numbers %}
+                  <span class="lotto-ball small">{{ number }}</span>
+                {% endfor %}
+              </div>
+            </td>
+            <td><span class="status-pill">{{ ticket.get_purchase_type_display }}</span></td>
+            <td>{{ ticket.purchased_at }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="empty-state">구매 내역이 없습니다.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </section>
 {% endblock %}
